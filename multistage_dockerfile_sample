@@ -1,0 +1,12 @@
+FROM openjdk:8 AS BUILD_IMG
+RUN apt update && apt install maven -y
+ARG GITHUB_TOKEN
+RUN git clone -b madhava https://$GITHUB_TOKEN@github.com/madhavareddy97056/flm_Tomcat_demo_repo.git
+RUN cd flm_Tomcat_demo_repo && mvn package
+
+FROM tomcat:8-jre11
+RUN rm -rf /usr/local/tomcat/webapps/*
+
+COPY --from=BUILD_IMG flm_Tomcat_demo_repo/target/myweb-8.6.5.war /usr/local/tomcat/webapps/ROOT.war
+EXPOSE 8080
+CMD ["catalina.sh", "run"]
