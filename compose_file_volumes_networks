@@ -1,0 +1,41 @@
+services:
+  movies:
+    build: "./movies/"
+    ports:
+      - 8081:80
+    volumes:
+      - movies:/usr/local/apache2/htdocs/
+    networks:
+      - movie_net
+
+  series:
+    build: "./series/"
+    ports:
+      - 8082:80
+    volumes:
+      - series:/usr/share/nginx/html
+    networks:
+      - series_net
+
+  shows:
+    build: "./shows/"
+    ports:
+      - 8083:80
+    volumes:
+      - shows:/usr/local/apache2/htdocs/
+    networks:
+      - shows_net
+volumes:
+  movies:
+  shows:
+  series:
+
+networks:
+  movie_net:
+    driver: bridge
+
+  series_net:
+    driver: bridge
+
+  shows_net:
+    driver: bridge
