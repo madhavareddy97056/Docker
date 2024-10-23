@@ -1,0 +1,12 @@
+FROM node:19-alpine AS base
+WORKDIR /app
+COPY package*.json .
+RUN npm install
+COPY . .
+EXPOSE 8082
+CMD npm start
+
+FROM base AS finali
+RUN npm install --production
+COPY . .
+CMD npm start
